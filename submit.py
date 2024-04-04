@@ -77,6 +77,7 @@ def submit(class_code, p_info, platform, sub_result_path):
         result = grepp_submit(class_code, p_info, sub_result_path)
     
     save_result(sub_result_path, p_info, result)
+    return result
     
 def leetcode_submit(class_code, p_info, sub_result_path):   
     _, p_name, _ = p_info
