@@ -50,8 +50,8 @@ def get_code_from_prompt(prompt, log_path, p_info, max_retries=5, delay=60):
     
     while retries < max_retries:
         try:
-            code = gpt_4_submit(prompt)
-            class_code, token_count = extract_class_code(code)
+            code, token_count = gpt_4_submit(prompt)
+            class_code = extract_class_code(code)
             if token_count >= 4000:
                 time.sleep(60)
             elif class_code.startswith("class"):
