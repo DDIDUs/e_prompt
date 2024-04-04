@@ -41,7 +41,7 @@ def gpt_4_submit(instruction):
 
 def get_error_promt(prob_desc, code_snippet):
     prompt = init_prompt.format(prob_desc, code_snippet)
-    error_prompt = gpt_4_submit(prompt)
+    error_prompt, _ = gpt_4_submit(prompt)
     
     return error_prompt
     
