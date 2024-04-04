@@ -30,23 +30,28 @@ def load_test_data(plat, n_sample):
     return 0
     
 def save_result(log_path, problem_info, data):
-    mode = "a"
-    
     p_diff, p_name, platform = problem_info
     
     result_path = log_path + "/{}_{}.json".format(platform, p_diff)
     
-    file_data = OrderedDict()
-    
-    file_data["difficulty"] = p_diff
-    file_data["problem_name"] = p_name
-    file_data["result"] = data                                              # type(data) == dict
-    
-    if not os.path.exists(result_path):
-        mode = "w"
-        
-    with open(result_path, mode, encoding="utf-8") as f:
-        json.dump(file_data, f, ensure_ascii=False, indent="\t")
+    f_data = OrderedDict()
+    f_data["difficulty"] = p_diff
+    f_data["problem_name"] = p_name
+    f_data["data"] = data                                         # type(data) == dict
+
+    if os.path.exists(result_path):
+        with open(result_path, 'r') as file:
+            file_data = json.load(file, object_pairs_hook=OrderedDict)
+        file_data["result"].append(f_data)
+        with open(result_path, "w", encoding="utf-8") as f:
+            json.dump(file_data, f, ensure_ascii=False, indent="\t")
+    else:
+        root = OrderedDict()
+        tmp = []
+        tmp.append(f_data)
+        root["result"] = tmp
+        with open(result_path, "w", encoding="utf-8") as f:
+            json.dump(root, f, ensure_ascii=False, indent="\t")
     
         
 def init_logpath(default_path, platform):
