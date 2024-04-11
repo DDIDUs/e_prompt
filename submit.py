@@ -1,11 +1,11 @@
 import os
 import time
-import openai
+#import openai
 import subprocess
 
 from data import *
 
-openai.api_key = ""
+#openai.api_key = ""
 
 init_prompt = '''
 For the problem below, configure prompts to help LLM understand the problem in detail and write code.
@@ -41,7 +41,7 @@ def gpt_4_submit(instruction):
 
 def get_error_promt(prob_desc, code_snippet):
     prompt = init_prompt.format(prob_desc, code_snippet)
-    error_prompt, _ = gpt_4_submit(prompt)
+    error_prompt = gpt_4_submit(prompt)
     
     return error_prompt
     
@@ -50,8 +50,8 @@ def get_code_from_prompt(prompt, log_path, p_info, max_retries=5, delay=60):
     
     while retries < max_retries:
         try:
-            code, token_count = gpt_4_submit(prompt)
-            class_code = extract_class_code(code)
+            code = gpt_4_submit(prompt)
+            class_code, token_count = extract_class_code(code)
             if token_count >= 4000:
                 time.sleep(60)
             elif class_code.startswith("class"):
@@ -77,6 +77,7 @@ def submit(class_code, p_info, platform, sub_result_path):
         result = grepp_submit(class_code, p_info, sub_result_path)
     
     save_result(sub_result_path, p_info, result)
+    
     return result
     
 def leetcode_submit(class_code, p_info, sub_result_path):   
