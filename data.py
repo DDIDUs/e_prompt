@@ -78,7 +78,7 @@ def select_grepp_problems():
     return 0
 
 def load_test_data(plat, n_sample):
-    if os.path.exists("./prob.pkl"):
+    if os.path.exists("./result/problem.pkl"):
         with open("./result/problem.pkl","wb") as f:
             test_data = pickle.load(f)
         shuffle(test_data)
