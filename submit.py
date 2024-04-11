@@ -1,11 +1,11 @@
 import os
 import time
-#import openai
+import openai
 import subprocess
 
 from data import *
 
-#openai.api_key = ""
+openai.api_key = ""
 
 init_prompt = '''
 For the problem below, configure prompts to help LLM understand the problem in detail and write code.
@@ -27,6 +27,21 @@ Requirement
 	- The generated prompt should include a description of the problem, a description of any errors that might occur when running the code, and a code template, and examples
 '''
 
+norm_prompt = '''
+Write a Python code that satisfies the conditions below.
+
+Problem
+‘’’
+{}
+‘’’
+
+Code template
+‘’’
+{}
+‘’’
+
+'''
+
 def gpt_4_submit(instruction):
     messages = [
             {"role": "user", "content": f"{instruction}"},
@@ -39,11 +54,14 @@ def gpt_4_submit(instruction):
     
     return response["choices"][0]["message"]["content"], response["usage"]["total_tokens"]
 
-def get_error_promt(prob_desc, code_snippet):
+def get_error_prompt(prob_desc, code_snippet):
     prompt = init_prompt.format(prob_desc, code_snippet)
     error_prompt = gpt_4_submit(prompt)
     
     return error_prompt
+
+def get_norm_prompt(prob_desc, code_snippet):
+    return norm_prompt.format(prob_desc, code_snippet)
     
 def get_code_from_prompt(prompt, log_path, p_info, max_retries=5, delay=60):
     retries = 0
