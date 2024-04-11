@@ -11,14 +11,24 @@ def test(args):
     
     test_data = load_test_data(platform, num_samples)
     
-    prompt_path, sub_result_path = init_logpath("./result", platform)
+    prompt_path, sub_result_path = init_logpath("./result/d_prompt", platform)
     
-    for problem in tqdm(test_data):
+    for problem in tqdm(test_data, desc="Depensive prompt"):
         p_disc, code_snippet, p_info = problem
         
-        prompt = get_error_promt(p_disc, code_snippet)
+        prompt = get_error_prompt(p_disc, code_snippet)
         gen_code = get_code_from_prompt(prompt, prompt_path, p_info)
         
+        result = submit(gen_code, p_info, platform, sub_result_path)
+        print(result)
+    
+    prompt_path, sub_result_path = init_logpath("./result/n_prompt", platform)
+    
+    for problem in tqdm(test_data, desc="Normal prompt"):
+        p_disc, code_snippet, p_info = problem
+        
+        prompt = get_norm_prompt(p_disc, code_snippet)
+        gen_code = get_code_from_prompt(prompt, prompt_path, p_info)
         result = submit(gen_code, p_info, platform, sub_result_path)
         print(result)
     
